@@ -1,19 +1,16 @@
 package org.unsam;
 
-import org.unsam.menu.MenuPrueba;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class Main {
-    public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(Main.class, args);
-        MenuPrueba menu = context.getBean(MenuPrueba.class);
-        try {
-            menu.run(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+    public static void main( String[] args ) {
+        SpringApplication.run(Main.class);
+        LOGGER.info("The application is now running......");
     }
 }
