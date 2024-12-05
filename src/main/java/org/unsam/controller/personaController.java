@@ -1,6 +1,7 @@
 package org.unsam.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,41 +19,65 @@ public class personaController {
 
     @PostMapping(value = "/usuarioPOST")
     public ResponseEntity<persona> guardarPersona(@RequestBody persona persona) {
-        persona nuevaPersona = personaService.guardarPersona(persona);
-        return ResponseEntity.ok(nuevaPersona);
+        try {
+            persona nuevaPersona = personaService.guardarPersona(persona);
+            return ResponseEntity.ok(nuevaPersona);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<persona>> listarPersonas() {
-        List<persona> personas = personaService.listarPersonas();
-        return ResponseEntity.ok(personas);
+        try {
+            List<persona> personas = personaService.listarPersonas();
+            return ResponseEntity.ok(personas);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<persona> obtenerPersonaPorId(@PathVariable Long id) {
-        return personaService.obtenerPersonaPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return personaService.obtenerPersonaPorId(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    
+
     @PostMapping
     public ResponseEntity<persona> crearPersona(@RequestBody persona persona) {
-        return ResponseEntity.ok(personaService.guardarPersona(persona));
+        try {
+            return ResponseEntity.ok(personaService.guardarPersona(persona));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<persona> actualizarPersona(@PathVariable Long id, @RequestBody persona persona) {
-        return personaService.actualizarPersona(id, persona)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return personaService.actualizarPersona(id, persona)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPersona(@PathVariable Long id) {
-        if (personaService.eliminarPersona(id)) {
-            return ResponseEntity.ok().build();
+        try {
+            if (personaService.eliminarPersona(id)) {
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.notFound().build();
     }
-
 }
+

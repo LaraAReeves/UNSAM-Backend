@@ -1,6 +1,7 @@
 package org.unsam.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.unsam.entity.horario;
@@ -17,33 +18,53 @@ public class horarioController {
 
     @GetMapping
     public ResponseEntity<List<horario>> listarHorarios() {
-        return ResponseEntity.ok(horarioService.listarHorarios());
+        try {
+            return ResponseEntity.ok(horarioService.listarHorarios());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<horario> obtenerHorarioPorId(@PathVariable Long id) {
-        return horarioService.obtenerHorarioPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return horarioService.obtenerHorarioPorId(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping
     public ResponseEntity<horario> crearHorario(@RequestBody horario horario) {
-        return ResponseEntity.ok(horarioService.guardarHorario(horario));
+        try {
+            return ResponseEntity.ok(horarioService.guardarHorario(horario));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<horario> actualizarHorario(@PathVariable Long id, @RequestBody horario horario) {
-        return horarioService.actualizarHorario(id, horario)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return horarioService.actualizarHorario(id, horario)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarHorario(@PathVariable Long id) {
-        if (horarioService.eliminarHorario(id)) {
-            return ResponseEntity.ok().build();
+        try {
+            if (horarioService.eliminarHorario(id)) {
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.notFound().build();
     }
 }
