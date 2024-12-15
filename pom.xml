@@ -73,7 +73,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Main-Class>org.unsam.main</Main-Class>
+                            <Main-Class>src.main.java.org.unsam.Main</Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
