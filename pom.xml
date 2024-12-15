@@ -10,8 +10,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>11</java.version> <!-- Cambia a la versión que necesites -->
-        <spring.boot.version>3.0.0</spring.boot.version> <!-- Cambia a una versión estable reciente -->
+        <java.version>11</java.version>
+        <spring.boot.version>3.0.0</spring.boot.version>
     </properties>
 
     <dependencyManagement>
@@ -64,6 +64,19 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Main-Class>com.example.UNSAMBackendApplication</Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
